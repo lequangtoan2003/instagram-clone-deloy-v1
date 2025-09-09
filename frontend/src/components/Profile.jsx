@@ -157,8 +157,8 @@ export default function Profile() {
             <span className="py-3 cursor-pointer">TAGS</span>
           </div>
           <div className="grid grid-cols-3 gap-1">
-            {displayedPost.map((post) => {
-              return (
+            {displayedPost?.length > 0 ? (
+              displayedPost.map((post) => (
                 <div key={post?._id} className="relative group cursor-pointer">
                   <img
                     className="rounded-sm w-full aspect-square object-cover"
@@ -169,17 +169,19 @@ export default function Profile() {
                     <div className="flex items-center text-white space-x-4">
                       <button className="flex items-center gap-2 hover:text-gray-300">
                         <Heart />
-                        <span>{post?.likes.length}</span>
+                        <span>{post?.likes?.length || 0}</span>
                       </button>
                       <button className="flex items-center gap-2 hover:text-gray-300">
                         <MessageCircle />
-                        <span>{post?.comments.length}</span>
+                        <span>{post?.comments?.length || 0}</span>
                       </button>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No posts to display</p>
+            )}
           </div>
         </div>
       </div>
