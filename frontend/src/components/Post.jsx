@@ -204,7 +204,7 @@ export default function Post({ post }) {
         <Bookmark
           onClick={bookmarkHandler}
           className={`cursor-pointer hover:text-gray-600 ${
-            user?.bookmarks.includes(post?._id)
+            Array.isArray(user?.bookmarks) && user.bookmarks.includes(post?._id)
               ? "bg-yellow-500 text-yellow-500"
               : ""
           }`}
