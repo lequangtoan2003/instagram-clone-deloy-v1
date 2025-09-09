@@ -67,7 +67,7 @@ export default function Post({ post }) {
     try {
       const action = liked ? "dislike" : "like";
       const res = await axios.get(
-        `http://localhost:8001/api/v1/post/${post._id}/${action}`,
+        `https://instagram-clone-deloy-v1.onrender.com/api/v1/post/${post._id}/${action}`,
         { withCredentials: true }
       );
       if (res.data.success) {
@@ -98,7 +98,7 @@ export default function Post({ post }) {
   const deletePostHandler = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:8001/api/v1/post/delete/${post?._id}`,
+        `https://instagram-clone-deloy-v1.onrender.com/api/v1/post/delete/${post?._id}`,
         { withCredentials: true }
       );
       if (res.data.success) {
@@ -116,7 +116,7 @@ export default function Post({ post }) {
   const bookmarkHandler = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8001/api/v1/post/${post?._id}/bookmark`,
+        `https://instagram-clone-deloy-v1.onrender.com/api/v1/post/${post?._id}/bookmark`,
         { withCredentials: true }
       );
       if (res.data.success) {
@@ -203,7 +203,11 @@ export default function Post({ post }) {
         </div>
         <Bookmark
           onClick={bookmarkHandler}
-          className="cursor-pointer hover:text-gray-600"
+          className={`cursor-pointer hover:text-gray-600 ${
+            user?.bookmarks.includes(post?._id)
+              ? "bg-yellow-500 text-yellow-500"
+              : ""
+          }`}
         />
       </div>
       <span className="font-medium block mb-2">
