@@ -27,7 +27,7 @@ export default function CommentDialog({ open, setOpen }) {
   const sendMessageHandler = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/v1/post/${selectedPost?._id}/comment`,
+        `https://instagram-clone-deloy-v1.onrender.com/api/v1/post/${selectedPost?._id}/comment`,
         { text },
         {
           headers: {

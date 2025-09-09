@@ -21,7 +21,7 @@ export default function ChatPage() {
   const sendMessageHandler = async (receiverId) => {
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/v1/message/send/${receiverId}`,
+        `https://instagram-clone-deloy-v1.onrender.com/api/v1/message/send/${receiverId}`,
         { textMessage },
         {
           headers: {

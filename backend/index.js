@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 5000;
 
 // Define corsOptions before using it
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: process.env.URL,
   credentials: true,
 };
 

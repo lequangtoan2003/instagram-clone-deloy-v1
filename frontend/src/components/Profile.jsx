@@ -22,7 +22,7 @@ export default function Profile() {
   const followOrUnfollow = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/v1/user/followorunfollow/${userProfile._id}`,
+        `https://instagram-clone-deloy-v1.onrender.com/api/v1/user/followorunfollow/${userProfile._id}`,
         {},
         { withCredentials: true }
       );

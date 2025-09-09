@@ -38,7 +38,7 @@ export default function Post({ post }) {
   const commentHandler = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/v1/post/${post._id}/comment`,
+        `https://instagram-clone-deloy-v1.onrender.com/api/v1/post/${post._id}/comment`,
         { text },
         {
           headers: {

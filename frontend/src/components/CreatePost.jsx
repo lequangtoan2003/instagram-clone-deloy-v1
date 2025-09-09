@@ -34,7 +34,7 @@ export default function CreatePost({ open, setOpen }) {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:8001/api/v1/post/addpost",
+        "https://instagram-clone-deloy-v1.onrender.com/api/v1/post/addpost",
         formData,
         {
           headers: {

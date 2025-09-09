@@ -8,9 +8,12 @@ const useGetAllPost = () => {
   useEffect(() => {
     const fetchAllPost = async () => {
       try {
-        const res = await axios.get("http://localhost:8001/api/v1/post/all", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          "https://instagram-clone-deloy-v1.onrender.com/api/v1/post/all",
+          {
+            withCredentials: true,
+          }
+        );
         if (res.data.message) {
           dispatch(setPosts(res.data.posts));
         }
