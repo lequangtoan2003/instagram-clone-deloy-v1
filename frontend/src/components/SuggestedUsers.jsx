@@ -33,7 +33,6 @@ export default function SuggestedUsers() {
     }
   };
 
-  console.log("suggestedUsers", suggestedUsers);
   return (
     <div className="my-10">
       <div className="flex justify-between items-center text-sm">
