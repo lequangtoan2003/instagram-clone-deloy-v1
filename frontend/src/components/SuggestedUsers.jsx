@@ -13,7 +13,7 @@ export default function SuggestedUsers() {
   const followOrUnfollow = async (targetUserId, isFollowing) => {
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/v1/user/followorunfollow/${targetUserId}`,
+        `https://instagram-clone-deloy-v1.onrender.com/api/v1/user/followorunfollow/${targetUserId}`,
         {},
         { withCredentials: true }
       );
