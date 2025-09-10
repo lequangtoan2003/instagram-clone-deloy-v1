@@ -15,7 +15,6 @@ const useGetSuggestedUsers = () => {
           }
         );
         if (res.data.message) {
-          console.log("sgu", res.data);
           dispatch(setSuggestedUsers(res.data.users));
         }
       } catch (error) {

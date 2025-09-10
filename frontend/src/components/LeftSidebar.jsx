@@ -24,7 +24,6 @@ export default function LeftSidebar() {
   const { likeNotification } = useSelector(
     (store) => store.realTimeNotification
   );
-  console.log("datauser:", user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState();

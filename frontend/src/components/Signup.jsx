@@ -21,7 +21,6 @@ export default function Signup() {
   };
   const signupHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
     try {
       setLoading(true);
       const res = await axios.post(

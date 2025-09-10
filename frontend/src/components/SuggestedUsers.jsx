@@ -1,10 +1,39 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { toast } from "sonner";
+import { updateFollowStatus } from "@/redux/authSlice";
 
 export default function SuggestedUsers() {
-  const { suggestedUsers } = useSelector((store) => store.auth);
+  const { suggestedUsers, user } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+
+  const followOrUnfollow = async (targetUserId, isFollowing) => {
+    try {
+      const res = await axios.post(
+        `http://localhost:8001/api/v1/user/followorunfollow/${targetUserId}`,
+        {},
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+        dispatch(
+          updateFollowStatus({
+            userId: user._id,
+            targetUserId,
+            isFollowing,
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error following/unfollowing user");
+    }
+  };
+
+  console.log("suggestedUsers", suggestedUsers);
   return (
     <div className="my-10">
       <div className="flex justify-between items-center text-sm">
@@ -12,15 +41,19 @@ export default function SuggestedUsers() {
         <span className="font-medium cursor-pointer">See All</span>
       </div>
       <div className="flex gap-3 flex-col my-4">
-        {suggestedUsers.map((user) => {
+        {suggestedUsers.map((suggestedUser) => {
+          const isFollowing = user?.following?.includes(suggestedUser._id);
           return (
-            <div key={user._id} className="flex justify-between items-center">
+            <div
+              key={suggestedUser._id}
+              className="flex justify-between items-center"
+            >
               <div className="flex gap-3 items-center">
-                <Link to={`/profile/${user?._id}`}>
+                <Link to={`/profile/${suggestedUser?._id}`}>
                   <Avatar>
                     <AvatarImage
                       className="object-cover"
-                      src={user?.profilePicture}
+                      src={suggestedUser?.profilePicture}
                       alt="post_image"
                     />
                     <AvatarFallback>CN</AvatarFallback>
@@ -28,15 +61,26 @@ export default function SuggestedUsers() {
                 </Link>
                 <div className="flex flex-col gap-1 font-bold text-sm">
                   <h1 className="font-semibold text-sm">
-                    <Link to={`/profile/${user?._id}`}>{user?.username}</Link>
+                    <Link to={`/profile/${suggestedUser?._id}`}>
+                      {suggestedUser?.username}
+                    </Link>
                   </h1>
                   <span className="font-normal text-gray-600 text-sm">
-                    {user?.bio || "Bio here..."}
+                    {suggestedUser?.bio || "Bio here..."}
                   </span>
                 </div>
               </div>
-              <div className="text-[#3BADF8] text-xs font-bold cursor-pointer hover:text-[#3495d6] pl-2">
-                Follow
+              <div
+                className={`text-xs font-bold cursor-pointer pl-2 ${
+                  isFollowing
+                    ? "text-gray-600 hover:text-gray-800"
+                    : "text-[#3BADF8] hover:text-[#3495d6]"
+                }`}
+                onClick={() => followOrUnfollow(suggestedUser._id, isFollowing)}
+              >
+                <div className="pl-4 max-w-8">
+                  {isFollowing ? "Unfollow" : "Follow"}
+                </div>
               </div>
             </div>
           );

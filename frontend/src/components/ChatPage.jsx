@@ -15,7 +15,6 @@ export default function ChatPage() {
     (store) => store.auth
   );
   const { onlineUsers, messages } = useSelector((store) => store.chat);
-  console.log("messages:", messages);
 
   const dispatch = useDispatch();
   const sendMessageHandler = async (receiverId) => {
@@ -31,7 +30,6 @@ export default function ChatPage() {
         }
       );
       if (res.data.success) {
-        console.log("API response:", res.data);
         dispatch(setMessages([...messages, res.data.newMessage]));
         setTextMessage("");
       }

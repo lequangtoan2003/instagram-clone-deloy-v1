@@ -24,7 +24,7 @@ const authSlice = createSlice({
     updateFollowStatus: (state, action) => {
       const { userId, targetUserId, isFollowing } = action.payload;
       if (isFollowing) {
-        // Unfollow: Xóa targetUserId khỏi following của user và userId khỏi followers của userProfile
+        // Unfollow: delete
         state.user.following = state.user.following.filter(
           (id) => id !== targetUserId
         );
@@ -34,10 +34,24 @@ const authSlice = createSlice({
           );
         }
       } else {
-        // Follow: Thêm targetUserId vào following của user và userId vào followers của userProfile
+        // Follow: add
         state.user.following.push(targetUserId);
         if (state.userProfile && state.userProfile._id === targetUserId) {
           state.userProfile.followers.push(userId);
+        }
+      }
+    },
+    toggleBookmark: (state, action) => {
+      const postId = action.payload;
+      if (state.user && Array.isArray(state.user.bookmarks)) {
+        if (state.user.bookmarks.includes(postId)) {
+          //(unbookmark)
+          state.user.bookmarks = state.user.bookmarks.filter(
+            (id) => id !== postId
+          );
+        } else {
+          //add
+          state.user.bookmarks.push(postId);
         }
       }
     },
@@ -50,5 +64,6 @@ export const {
   setUserProfile,
   updateFollowStatus,
   setSelectedUser,
+  toggleBookmark,
 } = authSlice.actions;
 export default authSlice.reducer;

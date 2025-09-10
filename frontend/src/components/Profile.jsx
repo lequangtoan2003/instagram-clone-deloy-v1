@@ -47,7 +47,6 @@ export default function Profile() {
   };
   const displayedPost =
     activeTab === "posts" ? userProfile?.posts : userProfile?.bookmarks;
-  console.log("user profile", userProfile);
   return (
     <div className="flex max-w-5xl my-8 justify-center mx-auto pl-10">
       <div className="flex flex-col gap-20 p-8">

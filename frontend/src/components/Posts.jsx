@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 export default function Posts() {
   const { posts } = useSelector((store) => store.post);
-  console.log(posts);
   return (
     <div>
       {posts.map((post) => {
