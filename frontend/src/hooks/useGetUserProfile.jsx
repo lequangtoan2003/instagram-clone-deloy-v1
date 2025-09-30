@@ -10,7 +10,7 @@ const useGetUserProfile = (userId) => {
       dispatch(setProfileLoading(true));
       try {
         const res = await axios.get(
-          `http://localhost:8001/api/v1/user/${userId}/profile`,
+          `https://instagram-clone-deloy-v1.onrender.com/api/v1/user/${userId}/profile`,
           {
             withCredentials: true,
           }
