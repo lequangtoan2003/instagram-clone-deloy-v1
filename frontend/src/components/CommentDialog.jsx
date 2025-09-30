@@ -13,6 +13,7 @@ import { setPosts, setSelectedPost } from "@/redux/postSlice";
 export default function CommentDialog({ open, setOpen }) {
   const [text, setText] = useState("");
   const { selectedPost, posts } = useSelector((store) => store.post);
+  const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
@@ -99,9 +100,11 @@ export default function CommentDialog({ open, setOpen }) {
                   <MoreHorizontal className="cursor-pointer" />
                 </DialogTrigger>
                 <DialogContent className="flex flex-col items-center text-center text-sm">
-                  <div className="cursor-pointer w-full text-[#ED4956]">
-                    Unfollow
-                  </div>
+                  {selectedPost?.author?._id !== user?._id ? (
+                    <div className="cursor-pointer w-full text-[#ED4956]">
+                      Unfollow
+                    </div>
+                  ) : null}
                   <div className="cursor-pointer w-full">Add to favorites</div>
                 </DialogContent>
               </Dialog>
