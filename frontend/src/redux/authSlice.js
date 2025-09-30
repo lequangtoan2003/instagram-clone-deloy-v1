@@ -7,6 +7,7 @@ const authSlice = createSlice({
     suggestedUsers: [],
     userProfile: null,
     selectedUser: null,
+    isProfileLoading: false,
   },
   reducers: {
     setAuthUser: (state, action) => {
@@ -17,6 +18,7 @@ const authSlice = createSlice({
     },
     setUserProfile: (state, action) => {
       state.userProfile = action.payload;
+      state.isProfileLoading = false;
     },
     setSelectedUser: (state, action) => {
       state.selectedUser = action.payload;
@@ -24,7 +26,7 @@ const authSlice = createSlice({
     updateFollowStatus: (state, action) => {
       const { userId, targetUserId, isFollowing } = action.payload;
       if (isFollowing) {
-        // Unfollow: delete
+        // Unfollow: Xóa targetUserId khỏi following của user và userId khỏi followers của userProfile
         state.user.following = state.user.following.filter(
           (id) => id !== targetUserId
         );
@@ -34,25 +36,31 @@ const authSlice = createSlice({
           );
         }
       } else {
-        // Follow: add
+        // Follow: Thêm targetUserId vào following của user và userId vào followers của userProfile
         state.user.following.push(targetUserId);
         if (state.userProfile && state.userProfile._id === targetUserId) {
           state.userProfile.followers.push(userId);
         }
       }
     },
+
     toggleBookmark: (state, action) => {
       const postId = action.payload;
       if (state.user && Array.isArray(state.user.bookmarks)) {
         if (state.user.bookmarks.includes(postId)) {
-          //(unbookmark)
           state.user.bookmarks = state.user.bookmarks.filter(
             (id) => id !== postId
           );
         } else {
-          //add
           state.user.bookmarks.push(postId);
         }
+      }
+    },
+
+    setProfileLoading: (state, action) => {
+      state.isProfileLoading = action.payload;
+      if (action.payload === true) {
+        state.userProfile = null;
       }
     },
   },
@@ -65,5 +73,6 @@ export const {
   updateFollowStatus,
   setSelectedUser,
   toggleBookmark,
+  setProfileLoading,
 } = authSlice.actions;
 export default authSlice.reducer;

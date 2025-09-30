@@ -1,4 +1,4 @@
-import { setUserProfile } from "@/redux/authSlice";
+import { setUserProfile, setProfileLoading } from "@/redux/authSlice";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -7,9 +7,10 @@ const useGetUserProfile = (userId) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchUserProfile = async () => {
+      dispatch(setProfileLoading(true));
       try {
         const res = await axios.get(
-          `https://instagram-clone-deloy-v1.onrender.com/api/v1/user/${userId}/profile`,
+          `http://localhost:8001/api/v1/user/${userId}/profile`,
           {
             withCredentials: true,
           }
@@ -19,9 +20,12 @@ const useGetUserProfile = (userId) => {
         }
       } catch (error) {
         console.log(error);
+        dispatch(setProfileLoading(false));
       }
     };
-    fetchUserProfile();
-  }, [userId]);
+    if (userId) {
+      fetchUserProfile();
+    }
+  }, [userId, dispatch]);
 };
 export default useGetUserProfile;
