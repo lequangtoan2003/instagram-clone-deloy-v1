@@ -29,6 +29,7 @@ export default function Post({ post }) {
     image,
     caption,
     author: { username, profilePicture },
+    formattedTime,
   } = post;
 
   const changeEventHandler = (e) => {
@@ -143,9 +144,13 @@ export default function Post({ post }) {
           </Avatar>
 
           <div className="flex items-center gap-3">
-            <Link to={`/profile/${post?.author?._id}`}>
+            <Link
+              className="flex gap-2 items-center"
+              to={`/profile/${post?.author?._id}`}
+            >
               <h1>{username}</h1>
             </Link>
+            <span className="text-xs text-gray-500">• {formattedTime} •</span>
             {user?._id === post.author._id && (
               <Badge variant="secondary">Author</Badge>
             )}
