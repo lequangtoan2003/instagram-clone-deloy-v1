@@ -2,6 +2,7 @@ import sharp from "sharp";
 import { Post } from "../models/post.model.js";
 import { User } from "../models/user.model.js";
 import { Comment } from "../models/comment.model.js";
+import { formatDistanceToNow } from "date-fns";
 import cloudinary from "../configs/cloudinary.js";
 import { getReceiverSocketId, io } from "../socket/socket.js";
 export const addNewPost = async (req, res) => {
@@ -37,8 +38,23 @@ export const addNewPost = async (req, res) => {
     }
 
     await post.populate({ path: "author", select: "-password" });
+    let formattedTime;
+    if (post.createdAt) {
+      const diffMs = Date.now() - new Date(post.createdAt).getTime();
+      const diffSeconds = Math.floor(diffMs / 1000);
+      formattedTime =
+        diffSeconds <= 60
+          ? "finished"
+          : formatDistanceToNow(new Date(post.createdAt));
+    } else {
+      formattedTime = "No time";
+    }
+
+    const postObj = post.toObject();
+    postObj.formattedTime = formattedTime;
+
     return res.status(201).json({
-      post,
+      post: postObj,
       message: "Post created successfully",
       success: true,
     });
@@ -58,8 +74,26 @@ export const getAllPost = async (req, res) => {
         sort: { createdAt: -1 },
         populate: { path: "author", select: "username profilePicture" },
       });
+
+    const formattedPosts = posts.map((post) => {
+      const postObj = post.toObject();
+      if (post.createdAt) {
+        const diffMs = Date.now() - new Date(post.createdAt).getTime();
+        const diffSeconds = Math.floor(diffMs / 1000);
+        postObj.formattedTime =
+          diffSeconds <= 60
+            ? "finished"
+            : formatDistanceToNow(new Date(post.createdAt)).replace(
+                /^about /,
+                ""
+              );
+      } else {
+        postObj.formattedTime = "No time";
+      }
+      return postObj;
+    });
     return res.status(200).json({
-      posts,
+      posts: formattedPosts,
       message: "Posts fetched successfully",
       success: true,
     });
