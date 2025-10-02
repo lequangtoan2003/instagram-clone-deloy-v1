@@ -18,23 +18,23 @@ import CreatePost from "./CreatePost";
 import { setPosts, setSelectedPost } from "@/redux/postSlice";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
+import { setSearchOpen } from "@/redux/searchSlice";
 
 export default function LeftSidebar() {
   const { user } = useSelector((store) => store.auth);
+  const { searchOpen } = useSelector((store) => store.search);
   const { likeNotification } = useSelector(
     (store) => store.realTimeNotification
   );
+  console.log("datauser:", user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState();
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(
-        "https://instagram-clone-deloy-v1.onrender.com/api/v1/user/logout",
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get("http://localhost:8001/api/v1/user/logout", {
+        withCredentials: true,
+      });
       if (res.data.success) {
         dispatch(setPosts([]));
         dispatch(setSelectedPost(null));
@@ -58,6 +58,8 @@ export default function LeftSidebar() {
       navigate("/");
     } else if (textType === "Message") {
       navigate("/chat");
+    } else if (textType === "Search") {
+      dispatch(setSearchOpen(!searchOpen));
     }
   };
 
@@ -89,10 +91,16 @@ export default function LeftSidebar() {
               <div
                 onClick={() => sidebarHandler(item.text)}
                 key={index}
-                className="flex items-center gap-3 relative hover:bg-gray-100 cursor-pointer rounded-lg p-3 my-3"
+                className={`flex items-center gap-3 relative hover:bg-gray-100 cursor-pointer rounded-lg p-3 my-3 ${
+                  item.text === "Search" ? "search-sidebar-item" : ""
+                }`}
               >
                 <div className="object-cover">{item.icon}</div>
-                <span>{item.text}</span>{" "}
+                <span
+                  className={item.text === "Search" && searchOpen ? "" : ""}
+                >
+                  {item.text}
+                </span>
                 {item.text === "Notifications" &&
                   likeNotification.length > 0 && (
                     <Popover>

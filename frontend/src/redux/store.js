@@ -4,6 +4,7 @@ import postSlice from "./postSlice.js";
 import socketSlice from "./socketSlice.js";
 import chatSlice from "./chatSlice.js";
 import rtnSlice from "./rtnSlice.js";
+import searchSlice from "./searchSlice.js";
 import {
   persistReducer,
   FLUSH,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   socketio: socketSlice,
   chat: chatSlice,
   realTimeNotification: rtnSlice,
+  search: searchSlice,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
