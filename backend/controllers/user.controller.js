@@ -237,3 +237,35 @@ export const followOrUnfollow = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const searchUsers = async (req, res) => {
+  try {
+    const query = req.query.q;
+    if (!query) {
+      return res.status(400).json({
+        message: "Plsease provide search query",
+        success: false,
+      });
+    }
+
+    const users = await User.find({
+      username: { $regex: query, $options: "i" },
+      _id: { $ne: req.id },
+    }).select("username _id profilePicture");
+    if (users.length === 0) {
+      return res.status(404).json({
+        message: "No users found",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      message: "Users fetched successfully",
+      success: true,
+      users,
+    });
+  } catch (error) {
+    console.error("Error during user search:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
