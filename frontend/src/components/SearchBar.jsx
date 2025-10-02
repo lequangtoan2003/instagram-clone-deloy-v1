@@ -19,7 +19,7 @@ const SearchBar = () => {
     }
     try {
       const response = await axios.get(
-        `http://localhost:8001/api/v1/user/search?q=${searchQuery}`,
+        `https://instagram-clone-deloy-v1.onrender.com/api/v1/user/search?q=${searchQuery}`,
         { withCredentials: true }
       );
       console.log("Search response:", response.data);
