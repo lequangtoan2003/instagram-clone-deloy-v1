@@ -24,6 +24,7 @@ export default function Post({ post }) {
   const isBookmarked =
     (Array.isArray(user?.bookmarks) && user.bookmarks.includes(post?._id)) ||
     false;
+  console.log("isBookmarked", user.bookmarks);
   const {
     image,
     caption,
