@@ -32,9 +32,12 @@ export default function LeftSidebar() {
   const [open, setOpen] = useState();
   const logoutHandler = async () => {
     try {
-      const res = await axios.get("http://localhost:8001/api/v1/user/logout", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        "https://instagram-clone-deloy-v1.onrender.com/api/v1/user/logout",
+        {
+          withCredentials: true,
+        }
+      );
       if (res.data.success) {
         dispatch(setPosts([]));
         dispatch(setSelectedPost(null));
