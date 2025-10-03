@@ -20,11 +20,10 @@ export default function Post({ post }) {
   const { posts } = useSelector((store) => store.post);
   const [liked, setLiked] = useState(post.likes.includes(user?._id) || false);
   const [postLike, setPostLike] = useState(post.likes.length);
-  const [isBookmarked, setIsBookmarked] = useState(
-    (Array.isArray(user?.bookmarks) && user.bookmarks.includes(post?._id)) ||
-      false
-  );
   const dispatch = useDispatch();
+  const isBookmarked =
+    (Array.isArray(user?.bookmarks) && user.bookmarks.includes(post?._id)) ||
+    false;
   const {
     image,
     caption,
@@ -126,8 +125,8 @@ export default function Post({ post }) {
         { withCredentials: true }
       );
       if (res.data.success) {
+        // Cập nhật Redux: Toggle bookmark trong user.bookmarks
         dispatch(toggleBookmark(post._id));
-        setIsBookmarked(!isBookmarked);
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -151,6 +150,7 @@ export default function Post({ post }) {
               <h1>{username}</h1>
             </Link>
             <span className="text-xs text-gray-500">• {formattedTime} •</span>
+
             {user?._id === post.author._id && (
               <Badge variant="secondary">Author</Badge>
             )}
